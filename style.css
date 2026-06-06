@@ -1,0 +1,502 @@
+/* ============================================================
+   LITERARY TIMELINE  —  style.css
+   ============================================================ */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* ── CSS custom properties ── */
+:root {
+  --cloud-h: calc(100vh - 230px);
+  /* space above the dot */
+  --dot-area-h: 90px;
+  --history-h: 140px;
+  --dot-size: 76px;
+  --station-w: 660px;
+  --station-compact: 160px;
+  --detail-panel-w: 310px;
+  --ease: cubic-bezier(0.4, 0, 0.2, 1);
+  --dur: 0.58s;
+  --bg: #FAF9F6;
+  --ink: #1A1A1A;
+  --muted: #888;
+  --border: #E5E3DF;
+}
+
+html,
+body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: 'Inter', sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ============================================================
+   BACK BUTTON
+   ============================================================ */
+
+#back-btn {
+  position: fixed;
+  top: 28px;
+  left: 36px;
+  z-index: 300;
+  background: none;
+  border: 1.5px solid var(--ink);
+  border-radius: 100px;
+  padding: 8px 22px;
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  color: var(--ink);
+  cursor: pointer;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease, background 0.2s ease, color 0.2s ease;
+}
+
+#back-btn.visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+#back-btn:hover {
+  background: var(--ink);
+  color: var(--bg);
+}
+
+/* ============================================================
+   SUBJECT TITLE BAR  (Mode 2)
+   ============================================================ */
+
+#subject-title-bar {
+  position: fixed;
+  top: 32px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 299;
+  font-family: 'Playfair Display', serif;
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  color: var(--ink);
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.35s ease;
+}
+
+#subject-title-bar.visible {
+  opacity: 1;
+}
+
+/* ============================================================
+   INSTRUCTION HINT
+   ============================================================ */
+
+#instruction-hint {
+  position: fixed;
+  bottom: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 10px;
+  color: var(--muted);
+  letter-spacing: 0.05em;
+  opacity: 0.55;
+  z-index: 50;
+  pointer-events: none;
+  transition: opacity 0.4s ease;
+  white-space: nowrap;
+}
+
+/* ============================================================
+   SCROLL CONTAINER & TRACK
+   ============================================================ */
+
+#timeline-container {
+  width: 100vw;
+  height: 100vh;
+  overflow-x: scroll;
+  overflow-y: hidden;
+  scrollbar-width: thin;
+  scrollbar-color: #CCC transparent;
+  cursor: grab;
+}
+
+#timeline-container:active {
+  cursor: grabbing;
+}
+
+#timeline-container::-webkit-scrollbar {
+  height: 4px;
+}
+
+#timeline-container::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+#timeline-container::-webkit-scrollbar-thumb {
+  background: #CCC;
+  border-radius: 4px;
+}
+
+#timeline-track {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  height: 100vh;
+  padding: 0 160px;
+  min-width: max-content;
+}
+
+/* ── Timeline horizontal line ── */
+#timeline-line {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 1.5px;
+  background: var(--ink);
+  /* sits at dot vertical center */
+  top: calc(var(--cloud-h) + var(--dot-area-h) / 2);
+  z-index: 1;
+  pointer-events: none;
+}
+
+/* ── Frequency curve SVG overlay ── */
+#freq-curve-svg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  pointer-events: none;
+  z-index: 5;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+
+#freq-curve-svg.visible {
+  opacity: 1;
+}
+
+/* ============================================================
+   DECADE STATION
+   ============================================================ */
+
+.decade-station {
+  position: relative;
+  /* z-index: 2 ensures stations (and their dots) paint above the z-index: 1 timeline line */
+  z-index: 2;
+  width: var(--station-w);
+  flex-shrink: 0;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  /* staggered fade-in via JS-applied animation-delay */
+  animation: stationFadeIn 0.7s ease both;
+  transition: width var(--dur) var(--ease), margin-left var(--dur) var(--ease);
+}
+
+@keyframes stationFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ============================================================
+   WORD CLOUD CANVAS
+   ============================================================ */
+
+.word-cloud-canvas {
+  width: 100%;
+  height: var(--cloud-h);
+  display: block;
+  flex-shrink: 0;
+  cursor: default;
+  transition: opacity 0.4s ease;
+}
+
+/* ============================================================
+   DOT AREA
+   ============================================================ */
+
+.dot-wrapper {
+  height: var(--dot-area-h);
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  z-index: 10;
+}
+
+.timeline-dot {
+  width: var(--dot-size);
+  height: var(--dot-size);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  user-select: none;
+  flex-shrink: 0;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.11);
+  transition: transform 0.22s ease, box-shadow 0.22s ease, outline 0.2s ease;
+  outline: 0px solid transparent;
+}
+
+.timeline-dot:hover {
+  transform: scale(1.1);
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.20);
+}
+
+.timeline-dot.expanded-dot {
+  outline: 2.5px solid var(--ink);
+  outline-offset: 3px;
+}
+
+.decade-label {
+  font-family: 'Playfair Display', serif;
+  font-size: 15px;
+  font-weight: 700;
+  color: rgba(0, 0, 0, 0.80);
+  letter-spacing: 0.01em;
+  pointer-events: none;
+}
+
+/* ============================================================
+   HISTORY AREA (below dot)
+   ============================================================ */
+
+.history-area {
+  height: var(--history-h);
+  flex-shrink: 0;
+  padding: 14px 22px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  overflow: hidden;
+  transition: opacity 0.4s ease;
+}
+
+.history-note {
+  font-size: 10.5px;
+  color: #777;
+  line-height: 1.55;
+}
+
+/* ============================================================
+   FREQUENCY INDICATOR  (Mode 2 — above dot)
+   ============================================================ */
+
+.freq-indicator {
+  position: absolute;
+  /* bottom edge = dot vertical center */
+  bottom: calc(var(--history-h) + var(--dot-area-h) / 2);
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  /* label on top, bar below */
+  align-items: center;
+  pointer-events: none;
+  opacity: 0;
+  z-index: 6;
+  transition: opacity 0.4s ease;
+}
+
+.freq-indicator.visible {
+  opacity: 1;
+}
+
+.freq-bar {
+  width: 1.5px;
+  background: var(--ink);
+  height: 0;
+  flex-shrink: 0;
+  transition: height 0.75s var(--ease);
+}
+
+.freq-label {
+  text-align: center;
+  padding-bottom: 10px;
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+
+.freq-label .freq-number {
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1.3;
+  color: var(--ink);
+}
+
+.freq-label .freq-subject {
+  font-size: 11px;
+  color: #555;
+  line-height: 1.3;
+}
+
+/* ============================================================
+   DETAIL PANEL  (Mode 3 — left of dot)
+   ============================================================ */
+
+.detail-panel {
+  position: absolute;
+  /* sits to the left of the station content box */
+  right: 100%;
+  top: 0;
+  width: var(--detail-panel-w);
+  height: calc(var(--cloud-h) + var(--dot-area-h));
+  background: var(--bg);
+  border-right: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  padding: 44px 26px 24px;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateX(14px);
+  transition: opacity 0.42s ease, transform 0.42s ease;
+  z-index: 20;
+}
+
+.detail-panel.visible {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateX(0);
+}
+
+.detail-panel-decade {
+  font-family: 'Playfair Display', serif;
+  font-size: 26px;
+  font-weight: 700;
+  color: var(--ink);
+  margin-bottom: 2px;
+}
+
+.detail-panel-label {
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 22px;
+}
+
+.detail-list {
+  overflow-y: auto;
+  flex: 1;
+  scrollbar-width: thin;
+  scrollbar-color: #DDD transparent;
+}
+
+.detail-list::-webkit-scrollbar {
+  width: 3px;
+}
+
+.detail-list::-webkit-scrollbar-thumb {
+  background: #CCC;
+  border-radius: 3px;
+}
+
+/* Fade-out at bottom to signal more content */
+.detail-list-wrap {
+  position: relative;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.detail-list-wrap::after {
+  content: '';
+  position: sticky;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 40px;
+  background: linear-gradient(to bottom, transparent, var(--bg));
+  pointer-events: none;
+  flex-shrink: 0;
+}
+
+.detail-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding: 7px 4px;
+  border-bottom: 1px solid #EEECEA;
+  gap: 10px;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: background 0.15s ease;
+}
+
+.detail-item:hover {
+  background: #F0EEEA;
+}
+
+.detail-item:hover .item-name {
+  color: #0055B3;
+}
+
+.detail-item .item-name {
+  font-size: 12.5px;
+  color: #333;
+  text-transform: capitalize;
+  flex: 1;
+  min-width: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  transition: color 0.15s ease;
+}
+
+.detail-item .item-count {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ink);
+  flex-shrink: 0;
+  min-width: 28px;
+  text-align: right;
+}
+
+/* ============================================================
+   BODY MODE MODIFIERS
+   ============================================================ */
+
+body.mode-subject .word-cloud-canvas {
+  opacity: 0;
+  pointer-events: none;
+}
+
+body.mode-subject .history-area {
+  opacity: 0.25;
+}
+
+body.mode-subject .timeline-dot {
+  cursor: default;
+}
+
+body.mode-subject .timeline-dot:hover {
+  transform: none;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.11);
+}
+
+body.mode-subject #instruction-hint {
+  opacity: 0;
+  pointer-events: none;
+}
