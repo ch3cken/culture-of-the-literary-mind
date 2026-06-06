@@ -624,7 +624,7 @@ window.addEventListener('resize', () => {
 async function init() {
   try {
     /* Load from parent directory (DH/topics_per_decade.json) */
-    const res = await fetch('./topics_per_decade.json');
+    const res = await fetch('topics_per_decade.json');
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     rawData = await res.json();
     buildTimeline();
