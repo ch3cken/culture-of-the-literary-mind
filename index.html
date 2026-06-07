@@ -1,17 +1,45 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Literary Subjects Through the Decades — 1890s to 2000s</title>
-  <meta name="description" content="An interactive timeline visualizing how literary subjects rose and fell in popularity from the 1890s to the 2000s.">
+  <title>Culture of the Literary Mind</title>
+  <meta name="description"
+    content="An interactive timeline visualizing how literary subjects rose and fell in popularity from the 1890s to the 2000s.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap"
+    rel="stylesheet">
   <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
 
+  <!-- ═══════════════════════════════════════════════
+       TITLE PAGE OVERLAY
+       ═══════════════════════════════════════════════ -->
+  <div id="title-page" role="main" aria-label="Title page">
+
+    <!-- Logo image -->
+    <img id="title-logo" src="logo.png" alt="Culture of the Literary Mind">
+
+    <!-- Start dot -->
+    <button id="start-btn" aria-label="Start the visualization">Start</button>
+
+    <!-- Credit -->
+    <div class="title-credit">
+      <span>20220825</span><br>
+      <span>Enrique Jose Delgado Garcia</span>
+    </div>
+
+  </div>
+  <!-- end #title-page -->
+
+  <!-- ═══════════════════════════════════════════════
+       MAIN APP (hidden until Start is pressed)
+       ═══════════════════════════════════════════════ -->
   <button id="back-btn" aria-label="Return to timeline">&#8592; Back</button>
   <div id="subject-title-bar" aria-live="polite"></div>
 
@@ -23,9 +51,11 @@
   </div>
 
   <div id="instruction-hint" aria-hidden="true">
-    Scroll to explore &rarr;&nbsp;&nbsp;|&nbsp;&nbsp;Click a word to trace it across decades&nbsp;&nbsp;|&nbsp;&nbsp;Click a dot to expand
+    Scroll to explore &rarr;&nbsp;&nbsp;|&nbsp;&nbsp;Click a word to trace it across
+    decades&nbsp;&nbsp;|&nbsp;&nbsp;Click a dot to expand
   </div>
 
   <script src="script.js"></script>
 </body>
+
 </html>

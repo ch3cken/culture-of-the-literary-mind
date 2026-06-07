@@ -622,6 +622,15 @@ window.addEventListener('resize', () => {
 /* ── 14. INIT ────────────────────────────────────────────── */
 
 async function init() {
+  /* ── Wire up Start button ── */
+  const startBtn = document.getElementById('start-btn');
+  if (startBtn) {
+    startBtn.addEventListener('click', () => {
+      document.body.classList.add('app-active');
+    });
+  }
+
+  /* ── Load data and build timeline ── */
   try {
     /* Load from parent directory (DH/topics_per_decade.json) */
     const res = await fetch('topics_per_decade.json');
