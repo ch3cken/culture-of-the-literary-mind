@@ -1,0 +1,5 @@
+pandas
+requests
+re
+beautifulsoup4
+Wikipedia-API
