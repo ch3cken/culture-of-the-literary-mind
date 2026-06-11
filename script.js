@@ -293,6 +293,7 @@ function buildTimeline() {
     list.className = 'detail-list';
 
     Object.entries(rawData[dec] || {})
+      .filter(([, count]) => count >= 5)
       .sort((a, b) => b[1] - a[1])
       .forEach(([text, count]) => {
         const item = document.createElement('div');
@@ -426,7 +427,9 @@ function onCanvasLeave(e) {
 }
 
 function onCanvasClick(e) {
-  if (appMode !== 'timeline') return;
+  // Block clicks entirely only when the subject frequency chart is visible
+  if (appMode === 'subject') return;
+
   const cvs = e.currentTarget;
   const dec = cvs.closest('.decade-station').dataset.decade;
   const r = cvs.getBoundingClientRect();
@@ -436,6 +439,8 @@ function onCanvasClick(e) {
   const words = cloudData[dec] || [];
   for (const w of words) {
     if (mx >= w.x && mx <= w.x + w.w && my >= w.y && my <= w.y + w.h + 4) {
+      // If the detail panel is open, close it first then show the frequency timeline
+      if (appMode === 'detail') collapseDetail();
       enterSubjectMode(w.orig);
       return;
     }

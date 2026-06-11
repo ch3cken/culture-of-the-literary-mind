@@ -64,8 +64,20 @@
         <h2 class="about-col-heading">What is &ldquo;Culture of the Literary Mind in 20th Century America&rdquo;?</h2>
         <div class="about-col-body">
           <!-- ✏️ Write your paragraph(s) here -->
-          <p>[Your first paragraph here]</p>
-          <p>[Your second paragraph here]</p>
+          <p>"Culture of the Literary Mind in 20th Century America" is a Digital Humanities project developed by Enrique
+            Jose Delgado Garcia, for the 2026 Spring course "Introduction to Digital Humanities" taught by professor
+            Donghyun Woo. The project aims to observe and give insight into American culture through the lens of popular
+            authors at the time.</p>
+          <p>This webpage provides a visualization timeline from the 1890s to the 2000s about the subjects of books that
+            best-selling authors wrote about in the form of a word cloud. Each decade has its own word cloud, where
+            <b>bigger words were more present in more authors' literature compared to the smaller words/phrases in the
+              cloud</b>. For precise numbers, one can click the decade dot on the timeline to see a list of subjects,
+            along
+            with their "frequency" (the number of best-selling authors that wrote about such subjects). Finally, if one
+            would like to see the trends of individual subjects, one can click on the subject in the word cloud or in
+            the "subjects by frequency" list to see a timeline of that specific subject's frequency in the 20th century
+            (including 1890s and 2000s).
+          </p>
         </div>
       </section>
 
@@ -73,8 +85,37 @@
         <h2 class="about-col-heading">What did I do for this project?</h2>
         <div class="about-col-body">
           <!-- ✏️ Write your paragraph(s) here -->
-          <p>[Your first paragraph here]</p>
-          <p>[Your second paragraph here]</p>
+          <p>It's of great importance for me to express my methodology exactly, so that no one is deceived by what I
+            mean by "best-selling author" and to understand where these "subjects" come from in the first place.</p>
+          <p>"Best-selling authors" were found by looking at the authors of Publishers' Weekly's list of best-selling
+            novels in United States in each year, from 1890 to 2009. These authors were then considered to be the
+            important authors to American culture, given that they had at least one best-selling book in that decade. To
+            be frank, I had first planned to do this project based only on the subjects of best-selling books only,
+            rather than their authors. However, due to limitations of some books not having much readily-accessible data
+            on them, and books having multiple editions and versions, and those having different data on them, I decided
+            to focus on those books' authors, given that they likely were the main "influencers" in the literary
+            American world, and what they wrote about would give a sufficient glance into American culture. To be sure,
+            this is a limitation in my work, alongside the fact that I'm only included novel writers, as opposed to
+            general book writers.</p>
+          <p>The subjects that the authors wrote about were then found using the OpenLibrary Search API. With a python
+            program, I was able to extract the subjects that each author wrote about in that respective decade, since
+            many of the books in the OpenLibrary API have a field "subjects" which represents the topics of the books.
+            The program went through all the books written in that decade by that author and accumulate all the subjects
+            that the author wrote about. This is where another limitation in my work comes into play: OpenLibrary API's
+            openness. People are free to submit subjects of books which had many implications in this work. It meant
+            that older authors naturally had less subjects attached to them, and also some of the topics were
+            nonsensical, repetitive, or were in other languages. I'd argue that this makes my research "reader-centric"
+            as the subjects extracted were subjects that readers believed were applicable to each work, and the fact
+            that any registered reader could submit subjects allows for multiplicity of reader opinion; not one
+            narrative is chosen, but multiple narrative topics are allowed to be given. However, I understand if that's
+            not a strong defense for this work. Because of some of the subjects' nonsensical and repetitive nature, I
+            had to clean up many of their strings, such as making a topic like "London (England)" into two different
+            topics "London" and "England". I also separated topics that appeared together such as "FICTION / Historical"
+            becoming "FICTION" and "Historical".
+          </p>
+          <p>To see the precise method, one can go to the <a
+              href="https://github.com/ch3cken/culture-of-the-literary-mind">GitHub page for this project</a>. I have
+            placed all program and data there, along with a README to understand it.</p>
         </div>
       </section>
 
