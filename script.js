@@ -619,20 +619,52 @@ window.addEventListener('resize', () => {
   }, 250);
 });
 
-/* ── 14. INIT ────────────────────────────────────────────── */
+/* ── 14. PAGE NAVIGATION ─────────────────────────────────── */
+
+function showTitle() {
+  document.body.classList.remove('app-active', 'show-timeline', 'show-about');
+}
+
+function showAbout() {
+  document.body.classList.remove('app-active', 'show-timeline');
+  document.body.classList.add('show-about');
+}
+
+function showTimeline() {
+  document.body.classList.remove('show-about');
+  document.body.classList.add('show-timeline', 'app-active');
+}
+
+/* ── 15. INIT ────────────────────────────────────────────── */
 
 async function init() {
-  /* ── Wire up Start button ── */
-  const startBtn = document.getElementById('start-btn');
-  if (startBtn) {
-    startBtn.addEventListener('click', () => {
-      document.body.classList.add('app-active');
+  /* ── Title page buttons ── */
+  document.getElementById('start-btn')
+    ?.addEventListener('click', showTimeline);
+
+  document.getElementById('about-btn')
+    ?.addEventListener('click', showAbout);
+
+  /* ── About page buttons ── */
+  document.getElementById('about-back-btn')
+    ?.addEventListener('click', showTitle);
+
+  document.getElementById('about-start-btn')
+    ?.addEventListener('click', showTimeline);
+
+  /* ── Timeline Home button ── */
+  document.getElementById('home-btn')
+    ?.addEventListener('click', () => {
+      /* Reset timeline to base state before going home */
+      if (appMode === 'subject' || appMode === 'detail') {
+        exitSubjectMode();
+      }
+      if (expandedDec) collapseDetail();
+      showTitle();
     });
-  }
 
   /* ── Load data and build timeline ── */
   try {
-    /* Load from parent directory (DH/topics_per_decade.json) */
     const res = await fetch('topics_per_decade.json');
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     rawData = await res.json();

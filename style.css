@@ -43,23 +43,61 @@ body {
    TITLE PAGE
    ============================================================ */
 
-#title-page {
+/* ── Shared overlay base ── */
+#title-page,
+#about-page {
   position: fixed;
   inset: 0;
   z-index: 1000;
-  background: var(--bg);
+  background: white;
+  opacity: 1;
+  transition: opacity 0.6s ease;
+  pointer-events: auto;
+}
+
+/* ── Title page layout ── */
+#title-page {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 56px;
+  gap: 52px;
+}
+
+/* ── About page hidden by default ── */
+#about-page {
+  opacity: 0;
+  pointer-events: none;
+  display: flex;
+  flex-direction: column;
+  padding: 38px 52px 28px;
+  overflow-y: auto;
+}
+
+/* Page visibility rules */
+body.show-timeline #title-page,
+body.show-about #title-page {
+  opacity: 0;
+  pointer-events: none;
+}
+
+body.show-about #about-page {
   opacity: 1;
-  transition: opacity 0.7s ease;
   pointer-events: auto;
 }
 
-/* When app is active, fade out and hide title page */
+body.show-timeline #about-page {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Keep legacy class working (app-active = show-timeline) */
 body.app-active #title-page {
+  opacity: 0;
+  pointer-events: none;
+}
+
+body.app-active #about-page {
   opacity: 0;
   pointer-events: none;
 }
@@ -74,8 +112,16 @@ body.app-active #title-page {
   pointer-events: none;
 }
 
-/* ── Start button ── */
-#start-btn {
+/* ── Title page buttons row ── */
+.title-buttons {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+}
+
+/* ── Start button (salmon) ── */
+#start-btn,
+#about-start-btn {
   width: 110px;
   height: 110px;
   border-radius: 50%;
@@ -89,15 +135,45 @@ body.app-active #title-page {
   cursor: pointer;
   transition: transform 0.18s ease, background 0.18s ease, box-shadow 0.18s ease;
   box-shadow: 0 4px 18px rgba(242, 160, 154, 0.35);
+  line-height: 1.25;
 }
 
-#start-btn:hover {
+#start-btn:hover,
+#about-start-btn:hover {
   transform: scale(1.07);
   background: #ed8c85;
   box-shadow: 0 8px 28px rgba(242, 160, 154, 0.55);
 }
 
-#start-btn:active {
+#start-btn:active,
+#about-start-btn:active {
+  transform: scale(0.96);
+}
+
+/* ── About This Project button (gold) ── */
+#about-btn {
+  width: 110px;
+  height: 110px;
+  border-radius: 50%;
+  border: none;
+  background: #F5D98A;
+  color: var(--ink);
+  font-family: 'Inter', sans-serif;
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 1.3;
+  cursor: pointer;
+  transition: transform 0.18s ease, background 0.18s ease, box-shadow 0.18s ease;
+  box-shadow: 0 4px 18px rgba(245, 217, 138, 0.40);
+}
+
+#about-btn:hover {
+  transform: scale(1.07);
+  background: #f0ce6a;
+  box-shadow: 0 8px 28px rgba(245, 217, 138, 0.6);
+}
+
+#about-btn:active {
   transform: scale(0.96);
 }
 
@@ -110,9 +186,111 @@ body.app-active #title-page {
   line-height: 1.6;
 }
 
+/* ============================================================
+   ABOUT PAGE INTERNALS
+   ============================================================ */
+
+.about-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 6px;
+}
+
+.about-header-left {}
+
+.about-title {
+  font-family: 'Inter', sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--ink);
+  letter-spacing: -0.01em;
+}
+
+.about-byline {
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  color: var(--muted);
+  margin-top: 4px;
+}
+
+.about-header-right {
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  color: var(--muted);
+  text-align: right;
+  flex-shrink: 0;
+  margin-left: 24px;
+}
+
+.about-divider {
+  border: none;
+  border-top: 1.5px solid var(--border);
+  margin: 14px 0 32px;
+}
+
+.about-columns {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 52px;
+  flex: 1;
+}
+
+.about-col-heading {
+  font-family: 'Inter', sans-serif;
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--ink);
+  line-height: 1.35;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.about-col-body {
+  font-family: 'Inter', sans-serif;
+  font-size: 13.5px;
+  color: var(--ink);
+  line-height: 1.7;
+}
+
+.about-col-body p {
+  margin-bottom: 16px;
+}
+
+/* About page bottom nav */
+.about-nav {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 22px;
+  margin-top: 36px;
+  padding-bottom: 8px;
+}
+
+/* Small back arrow circle */
+#about-back-btn {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  border: 1.5px solid var(--border);
+  background: var(--bg);
+  color: var(--ink);
+  font-size: 20px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: border-color 0.15s, background 0.15s;
+}
+
+#about-back-btn:hover {
+  border-color: var(--ink);
+  background: #f0eeea;
+}
+
 
 /* ============================================================
-   BACK BUTTON
+   BACK BUTTON  (subject → timeline)
    ============================================================ */
 
 #back-btn {
@@ -144,6 +322,50 @@ body.app-active #title-page {
   background: var(--ink);
   color: var(--bg);
 }
+
+/* ============================================================
+   HOME BUTTON  (timeline → title screen)
+   ============================================================ */
+
+#home-btn {
+  position: fixed;
+  top: 28px;
+  left: 36px;
+  z-index: 300;
+  background: white;
+  border: 1.5px solid var(--ink);
+  border-radius: 100px;
+  padding: 8px 22px;
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  color: var(--ink);
+  cursor: pointer;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease, background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+}
+
+/* Visible only when the timeline is showing */
+body.show-timeline #home-btn,
+body.app-active #home-btn {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* Hide when subject mode is active (back-btn takes that corner) */
+body.mode-subject #home-btn {
+  opacity: 0;
+  pointer-events: none;
+}
+
+#home-btn:hover {
+  background: var(--ink);
+  color: var(--bg);
+  border-color: var(--ink);
+}
+
 
 /* ============================================================
    SUBJECT TITLE BAR  (Mode 2)

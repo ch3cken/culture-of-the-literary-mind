@@ -18,15 +18,18 @@
 <body>
 
   <!-- ═══════════════════════════════════════════════
-       TITLE PAGE OVERLAY
+       TITLE PAGE
        ═══════════════════════════════════════════════ -->
   <div id="title-page" role="main" aria-label="Title page">
 
     <!-- Logo image -->
     <img id="title-logo" src="logo.png" alt="Culture of the Literary Mind">
 
-    <!-- Start dot -->
-    <button id="start-btn" aria-label="Start the visualization">Start</button>
+    <!-- Action buttons (side by side) -->
+    <div class="title-buttons">
+      <button id="start-btn" aria-label="Start the visualization">Start</button>
+      <button id="about-btn" aria-label="About this project">About<br>This<br>Project</button>
+    </div>
 
     <!-- Credit -->
     <div class="title-credit">
@@ -37,9 +40,64 @@
   </div>
   <!-- end #title-page -->
 
+
   <!-- ═══════════════════════════════════════════════
-       MAIN APP (hidden until Start is pressed)
+       ABOUT PAGE
        ═══════════════════════════════════════════════ -->
+  <div id="about-page" role="region" aria-label="About this project">
+
+    <!-- Header bar -->
+    <header class="about-header">
+      <div class="about-header-left">
+        <div class="about-title">Culture of the Literary Mind in 20th Century America</div>
+        <div class="about-byline">20220825 &nbsp;|&nbsp; Enrique Jose Delgado Garcia</div>
+      </div>
+      <div class="about-header-right">2026 Spring &ndash; Introduction to Digital Humanities</div>
+    </header>
+
+    <hr class="about-divider">
+
+    <!-- Two-column content -->
+    <div class="about-columns">
+
+      <section class="about-col">
+        <h2 class="about-col-heading">What is &ldquo;Culture of the Literary Mind in 20th Century America&rdquo;?</h2>
+        <div class="about-col-body">
+          <!-- ✏️ Write your paragraph(s) here -->
+          <p>[Your first paragraph here]</p>
+          <p>[Your second paragraph here]</p>
+        </div>
+      </section>
+
+      <section class="about-col">
+        <h2 class="about-col-heading">What did I do for this project?</h2>
+        <div class="about-col-body">
+          <!-- ✏️ Write your paragraph(s) here -->
+          <p>[Your first paragraph here]</p>
+          <p>[Your second paragraph here]</p>
+        </div>
+      </section>
+
+    </div>
+
+    <!-- Bottom navigation: back arrow + Start -->
+    <div class="about-nav">
+      <button id="about-back-btn" aria-label="Back to title screen">&#8592;</button>
+      <button id="about-start-btn" aria-label="Start the visualization">Start</button>
+    </div>
+
+  </div>
+  <!-- end #about-page -->
+
+
+  <!-- ═══════════════════════════════════════════════
+       MAIN TIMELINE APP
+       ═══════════════════════════════════════════════ -->
+
+  <!-- Home button returns to title screen -->
+  <button id="home-btn" aria-label="Return to title screen">&#8592; Home</button>
+
+  <!-- Subject-frequency back button (existing) -->
   <button id="back-btn" aria-label="Return to timeline">&#8592; Back</button>
   <div id="subject-title-bar" aria-live="polite"></div>
 
